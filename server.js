@@ -9,7 +9,7 @@ exports.main = function(callback) {
 
     var app = EXPRESS();
 
-    mountStaticDir(app, /^\/(.*\.html?)?$/, __dirname);
+    mountStaticDir(app, /^\/(.*(?:\.html)?)?$/, __dirname);
 
     var server = app.listen(PORT);
     console.log("open http://localhost:" + PORT + "/");
