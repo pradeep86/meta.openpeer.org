@@ -21,6 +21,7 @@ function mountStaticDir(app, route, path) {
     app.get(route, function(req, res, next) {
         var originalUrl = req.url;
         req.url = req.params[0] || "index.html";
+        res.setHeader("Content-Type", "text/plain");
         EXPRESS.static(path)(req, res, function() {
             req.url = originalUrl;
             return next.apply(null, arguments);
