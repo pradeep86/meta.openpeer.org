@@ -9,6 +9,28 @@ exports.main = function(callback) {
 
     var app = EXPRESS();
 
+    app.use(function(req, res, next) {
+        var origin = null;
+        if (req.headers.origin) {
+            origin = req.headers.origin;
+        } else
+        if (req.headers.host) {
+            origin = [
+                (PORT === 443) ? "https" : "http",
+                "://",
+                req.headers.host
+            ].join("");
+        }
+        res.setHeader("Access-Control-Allow-Methods", "GET");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        if (req.method === "OPTIONS") {
+            return res.end();
+        }
+        return next();
+    });
+
     mountStaticDir(app, /^\/(.*(?:\.html)?)?$/, __dirname);
 
     var server = app.listen(PORT);
